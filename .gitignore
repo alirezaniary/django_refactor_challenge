@@ -1,0 +1,6 @@
+*.pdf
+__pycache__
+config.py
+media
+my_blog/.vscode/settings.json
+*.bin

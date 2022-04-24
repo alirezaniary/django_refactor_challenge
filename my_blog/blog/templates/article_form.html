@@ -1,0 +1,104 @@
+{% extends 'index.html' %}
+{% block title %} مقاله جدید {% endblock %}
+{% load bootstrap5 %}
+{% load static %} 
+{% block content %}
+
+{% if error %} 
+<div role="alert"> {{ error }} </div> 
+{% endif %}
+
+<div class="col-11">
+<form id="new-form" method="post" enctype="multipart/form-data" autocomplete="off"> 
+	{% csrf_token %}
+
+	{{ form.title.errors }}
+
+	<div class="new-page1">
+		<div class="form-floating mb-3 ">
+			<input type="text " name="{{ form.title.name }}" maxlength="150" required id="id_title" class="form-control" value="{{ form.title.data }}" placeholder="">
+			
+		</div>
+		{{ form.text.errors }}
+		<div class="form-floating">
+			<textarea class="form-control h-100 " name="{{ form.text.name }}" row="1" rows="5" required id="id_text" placeholder="">{% if form.text.data != None %}{{ form.text.data }}{% endif %}</textarea>
+			<label class="keep-right" for="id_text">نوشتن رو شروع کن، بذار افکار جریان پیدا کنند</label>
+			
+		</div>
+		<div  class="d-grid gap-2 mt-2">
+			<div id="continue" class="btn btn-outline-primary" > ادامه </div>
+		</div>
+	</div>
+	<div class="new-page2" style="display: none;">
+
+		<div class="container py-5">
+
+		
+			<div class="row ">
+				<div class="col-lg-6 mx-auto">
+		
+					<!-- Upload image input-->
+					<div class="input-group mb-3 px-2 py-2 rounded-pill bg-dark shadow-sm">
+					<input name="{{ form.img_path.name }}" required id="upload" type="file"  class="form-control border-0">
+						<label id="upload-label" for="upload" class="font-weight-light keep-right text-muted">آپلود تصویر</label>
+						<div class="input-group-append">
+							<label for="upload" class="btn btn-light m-0 rounded-pill px-4"> 
+								<i class="fa fa-cloud-upload text-muted"></i>
+								<small class="text-uppercase font-weight-bold text-muted">انتخاب فایل</small>
+							</label>
+						</div>
+					</div>
+		
+					<!-- Uploaded image area-->
+					<div class="image-area mt-4">
+						<img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block">
+					</div>
+		
+				</div>
+			</div>
+		</div>
+
+<div class="d-flex justify-content-between">
+<div class="col-5">
+<select class="form-select mb-3" name="topic" required id="id_topic">
+
+  	<option value="" selected>دسته بندی کلی مقاله را مشخص کنید</option>
+	{% for option in form.topic|slice:"1:" %}
+  	{{ option }}
+    {% endfor %}
+</select>
+</div>
+<div class="d-flex flex-column col-5">
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" name="is_active" id="id_is_active" checked>
+  <label class="form-check-label" for="id_is_active">مقاله آماده انتشار است؟</label>
+</div>
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" name="is_valid" id="id_is_valid">
+  <label class="form-check-label" for="id_is_valid">مقاله جهت تایید ویراستار ارسال شود؟</label>
+</div>
+</div>
+</div>
+<div class="d-flex flex-wrap " id="tagbox">
+<input class="rounded p-2 bg-transparent" type="text" list="datalistOptions" id="tag-input" placeholder="برچسب مناسب اضافه کنید">
+<datalist id="datalistOptions">
+
+</datalist>
+
+</div>
+
+
+<select class="d-none" name="tag" id="id_tag" multiple>
+
+</select>
+	<div class="d-flex justify-content-between mt-2">
+		<div id="back" class="btn btn-outline-secondary col-2" > برگشت </div>
+
+		<button class="btn btn-outline-primary col-9" type="submit">ذخیره</button>
+	</div>
+</div>
+</form>
+</div>
+
+{% endblock %}
+{% block script %}<script src="{% static 'blog/new_article_script.js' %}"></script>{% endblock %}
